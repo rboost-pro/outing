@@ -3,338 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jodhpur to Kumbhalgarh | Wilderness Retreat</title>
+    <title>KUMBHALGARH | The Private Collection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400&family=Syncopate:wght@400;700&family=Inter:wght@300;400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. RESET & CORE VARIABLES --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #1a4d2e;       /* Deep Emerald */
-            --primary-light: #2d8659; /* Lighter Green */
-            --accent: #cfa75f;        /* Muted Gold */
-            --bg-body: #f0f2f0;       /* Light Gray-Green tint */
-            --text-dark: #2c3e50;
-            --white: #ffffff;
+            --gold: #b89150;
+            --dark: #0a0b0d;
+            --paper: #ffffff;
+            --accent: #1e3a2b;
+            --ink: #002d72;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 
-        /* --- 2. WELCOME MODAL --- */
-        #intro-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover; background-position: center;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 3000; transition: opacity 0.8s ease;
-            backdrop-filter: blur(8px);
+        /* --- 1. THE CINEMATIC ENTRY --- */
+        #entry-gate {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #000; display: flex; justify-content: center; align-items: center;
+            transition: 1.5s cubic-bezier(0.85, 0, 0.15, 1);
         }
-        .modal-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 50px; border-radius: 15px; text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            max-width: 500px; width: 90%;
-            border-top: 5px solid var(--primary);
-            animation: float 3s ease-in-out infinite;
+        
+        .gate-bg {
+            position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070') center/cover;
+            opacity: 0.5; transform: scale(1.1);
+            transition: 3s ease;
         }
-        .modal-box h1 { color: var(--primary); font-size: 3rem; margin-bottom: 10px; }
-        .modal-box p { color: #666; margin-bottom: 35px; font-size: 1.2rem; font-weight: 500; }
-        .btn-start {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: var(--white); padding: 15px 45px; font-size: 1.1rem; border: none;
-            border-radius: 50px; cursor: pointer; font-weight: 600; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(26, 77, 46, 0.3); transition: transform 0.3s;
-        }
-        .btn-start:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(26, 77, 46, 0.4); }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
+        #entry-gate.open .gate-bg { transform: scale(1.3); opacity: 0; }
 
-        /* --- 3. MAIN APP CONTAINER --- */
-        #main-app { display: none; opacity: 0; transition: opacity 1s ease; }
+        .gate-content {
+            position: relative; z-index: 10; text-align: center;
+        }
+        .gate-content h1 {
+            font-family: 'Syncopate', sans-serif; font-size: clamp(2rem, 8vw, 6rem);
+            letter-spacing: 20px; text-transform: uppercase; margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, var(--gold), #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .btn-explore {
+            margin-top: 30px; background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); padding: 20px 60px; font-family: 'Syncopate';
+            font-size: 0.7rem; cursor: pointer; transition: 0.5s;
+            overflow: hidden; position: relative;
+        }
+        .btn-explore:hover { background: var(--gold); color: #000; letter-spacing: 5px; }
 
-        /* --- 4. HEADER --- */
+        /* --- 2. THE MAIN CANVAS --- */
+        #main-canvas { display: none; background: var(--paper); color: var(--dark); opacity: 0; transition: 1s; }
+
         header {
-            background: var(--primary); color: var(--white);
-            padding: 60px 20px; text-align: center;
-            margin-bottom: 40px;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
+            background: #f8f8f8;
         }
-        header h2 { font-size: 2.5rem; margin-bottom: 10px; }
-        .accent-text { color: var(--accent); font-style: italic; }
+        .scroll-hint { position: absolute; bottom: 40px; font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* --- 5. RESORT LINK BANNER --- */
-        .booking-banner {
-            max-width: 800px; margin: 0 auto 60px;
-            background: var(--white); padding: 30px; border-radius: 15px;
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 5px solid var(--accent);
+        /* --- 3. THE GLOWING ROADMAP --- */
+        .roadmap-v3 {
+            max-width: 1200px; margin: 0 auto; padding: 150px 20px;
+            position: relative;
         }
-        .booking-info h3 { color: var(--primary); font-size: 1.5rem; margin-bottom: 5px; }
-        .btn-book {
-            text-decoration: none; background: var(--accent); color: var(--white);
-            padding: 12px 25px; border-radius: 50px; font-weight: 600;
-            transition: background 0.3s; white-space: nowrap;
-        }
-        .btn-book:hover { background: #b58e45; }
-
-        /* --- 6. ROADMAP TIMELINE UI --- */
-        .timeline-container { max-width: 900px; margin: 0 auto 80px; padding: 0 20px; position: relative; }
-        .timeline-container::before {
-            content: ''; position: absolute; top: 0; height: 100%; left: 50%;
-            width: 2px; background: rgba(26, 77, 46, 0.2); transform: translateX(-50%);
+        
+        .roadmap-v3::before {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            transform: translateX(-50%); opacity: 0.2;
         }
 
-        .day-header {
-            text-align: center; margin: 60px 0 40px; position: relative; z-index: 2;
+        .milestone {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 180px; position: relative; opacity: 0;
+            transform: translateY(100px) scale(0.9); transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .day-badge {
-            background: var(--primary); color: var(--white);
-            padding: 12px 40px; border-radius: 50px; font-weight: 700; letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(26, 77, 46, 0.2); font-family: 'Playfair Display', serif;
+        .milestone.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+        .milestone:nth-child(even) { flex-direction: row-reverse; }
+
+        .m-content { 
+            width: 42%; padding: 40px; background: #fff; border-radius: 2px;
+            box-shadow: 40px 40px 80px rgba(0,0,0,0.03);
+            border-top: 4px solid var(--gold);
+        }
+        .m-content span { font-family: 'Syncopate'; font-size: 0.6rem; color: var(--gold); letter-spacing: 3px; }
+        .m-content h3 { font-family: 'Bodoni Moda', serif; font-size: 2.8rem; margin: 15px 0; font-style: italic; }
+        .m-content p { font-size: 1rem; color: #555; line-height: 1.8; font-weight: 300; }
+
+        .m-number {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            font-family: 'Bodoni Moda'; font-size: 6rem; color: #f0f0f0;
+            z-index: -1; font-style: italic;
         }
 
-        .timeline-item {
-            margin-bottom: 40px; position: relative; width: 50%;
-            opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out;
+        /* --- 4. THE DESIGNER RECEIPT --- */
+        .receipt-container {
+            background: #f0f0f0; padding: 150px 20px;
         }
-        .timeline-item:nth-child(odd) { left: 0; padding-right: 45px; }
-        .timeline-item:nth-child(even) { left: 50%; padding-left: 45px; }
-        .timeline-item.visible { opacity: 1; transform: translateY(0); }
-
-        .timeline-icon {
-            position: absolute; top: 0; right: -25px;
-            width: 50px; height: 50px; background: var(--accent); color: var(--white);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 0 6px var(--bg-body); z-index: 5; font-size: 1.2rem;
+        .paper-bill {
+            max-width: 600px; margin: 0 auto; background: #fff;
+            padding: 80px 60px; position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+            filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.05));
         }
-        .timeline-item:nth-child(even) .timeline-icon { right: auto; left: -25px; }
-
-        .timeline-content {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 25px; border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-left: 4px solid var(--primary-light);
-        }
-        .time-stamp { display: block; color: var(--primary); font-weight: 700; margin-bottom: 8px; }
-        .timeline-content h4 { color: var(--text-dark); font-size: 1.4rem; margin-bottom: 10px; }
-        .timeline-content p { color: #555; line-height: 1.6; }
-
-        .highlight-event .timeline-content {
-            background: linear-gradient(to right, rgba(26, 77, 46, 0.05), rgba(255,255,255,0.9));
-            border-left-color: var(--accent);
+        .paper-bill::after {
+            content: ""; position: absolute; bottom: -20px; left: 0; width: 100%; height: 20px;
+            background: linear-gradient(-45deg, #f0f0f0 10px, transparent 0), linear-gradient(45deg, #f0f0f0 10px, transparent 0);
+            background-size: 20px 20px;
         }
 
-        /* --- 7. VIDEO LINK SECTION --- */
-        .footer-links {
-            text-align: center;
-            padding: 40px 20px;
-            background: #fff;
-            margin-top: 40px;
-            border-top: 1px solid #eee;
+        .bill-header { text-align: center; margin-bottom: 50px; }
+        .bill-header h4 { font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 5px; }
+
+        .bill-line {
+            display: flex; justify-content: space-between; padding: 20px 0;
+            border-bottom: 1px solid #eee; font-size: 0.9rem; letter-spacing: 1px;
         }
-        .yt-link {
-            color: #c4302b;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-            border: 2px solid #c4302b;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+        .bill-line strong { color: var(--gold); }
+
+        .bill-total-box {
+            margin-top: 60px; display: flex; justify-content: space-between; align-items: center;
         }
-        .yt-link:hover {
-            background: #c4302b;
-            color: #fff;
+        .total-hand {
+            font-family: 'Caveat', cursive; font-size: 4.5rem; color: var(--ink);
+            position: relative; display: inline-block;
         }
+        .total-hand::after {
+            content: ''; position: absolute; bottom: 10px; left: 0; width: 0; height: 3px;
+            background: var(--ink); border-radius: 2px; transition: 1.5s ease-out 0.5s;
+        }
+        .visible .total-hand::after { width: 110%; }
+
+        footer { text-align: center; padding: 100px 0; font-family: 'Syncopate'; font-size: 0.6rem; opacity: 0.4; color: #000; }
 
         @media (max-width: 768px) {
-            header h2 { font-size: 2rem; }
-            .booking-banner { flex-direction: column; text-align: center; }
-            .booking-info { margin-bottom: 20px; }
-            .timeline-container::before { left: 30px; }
-            .timeline-item { width: 100%; left: 0 !important; padding-left: 70px !important; padding-right: 0 !important; }
-            .timeline-icon { left: 5px !important; right: auto !important; }
-            .modal-box h1 { font-size: 2.5rem; }
+            .milestone { flex-direction: column !important; text-align: center; }
+            .m-content { width: 100%; }
+            .roadmap-v3::before, .m-number { display: none; }
+            .paper-bill { padding: 40px 20px; width: 95%; }
         }
     </style>
 </head>
 <body>
 
-    <div id="intro-modal">
-        <div class="modal-box">
+    <div id="entry-gate">
+        <div class="gate-bg"></div>
+        <div class="gate-content">
             <h1>KUMBHALGARH</h1>
-            <p>2-Day Wilderness & Hariyali Escape</p>
-            <button class="btn-start" onclick="revealItinerary()">View Roadmap</button>
+            <button class="btn-explore" onclick="unlock()">ENTER EXPEDITION</button>
         </div>
     </div>
 
-    <div id="main-app">
-        
+    <div id="main-canvas">
         <header>
-            <h2>Jodhpur <span class="accent-text">to</span> The Aravallis</h2>
-            <p>Your curated getaway plan</p>
+            <p style="font-family: 'Syncopate'; font-size: 0.7rem; letter-spacing: 8px; color: var(--gold);">PRIVATE JOURNEY</p>
+            <h2 style="font-family: 'Bodoni Moda'; font-size: 5rem; font-style: italic;">The Wild Family</h2>
+            <div class="scroll-hint">SCROLL TO EXPLORE</div>
         </header>
 
-        <div class="booking-banner">
-            <div class="booking-info">
-                <h3>Stay: Lake Alpi Resort</h3>
-                <p>Wooden cottages near the sanctuary edge with a pool.</p>
-            </div>
-            <a href="https://lakealpiresort.com/reservation/" target="_blank" class="btn-book">Check Availability <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        </div>
-
-        <div class="timeline-container">
+        <section class="roadmap-v3">
             
-            <div class="day-header">
-                <span class="day-badge">DAY 1: SUNDAY, JAN 25</span>
+            <div class="milestone js-reveal">
+                <div class="m-number">01</div>
+                <div class="m-content">
+                    <span>JANUARY 25 • 08:00 AM</span>
+                    <h3>The Convoy</h3>
+                    <p>Departing Jodhpur with the full family of 10. A cinematic drive as we climb towards the Aravalli skyline.</p>
+                </div>
+                <div style="width: 42%;"></div>
             </div>
 
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-car"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">08:00 AM</span>
-                    <h4>Depart Jodhpur</h4>
-                    <p>Start early to beat traffic. The ~185km drive via Pali takes about 4 hours. Enjoy the transition from plains to hills.</p>
+            <div class="milestone js-reveal">
+                <div class="m-number">02</div>
+                <div style="width: 42%;"></div>
+                <div class="m-content">
+                    <span>JANUARY 25 • 1:00 PM</span>
+                    <h3>The Retreat</h3>
+                    <p>Arrival at Lake Alpi. Unpacking into 3 luxury wooden cottages where the forest meets the water's edge.</p>
                 </div>
             </div>
 
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-bell"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">12:15 PM</span>
-                    <h4>Check-in: Lake Alpi Resort</h4>
-                    <p>Arrival and welcome drink. Settle into your cottage surrounded by nature.</p>
+            <div class="milestone js-reveal">
+                <div class="m-number">03</div>
+                <div class="m-content">
+                    <span>JANUARY 25 • 04:00 PM</span>
+                    <h3>Sunset Safari</h3>
+                    <p>Our first deep-forest expedition. Tracking the elusive leopard in the golden light of the sanctuary.</p>
+                </div>
+                <div style="width: 42%;"></div>
+            </div>
+
+            <div class="milestone js-reveal">
+                <div class="m-number">04</div>
+                <div style="width: 42%;"></div>
+                <div class="m-content">
+                    <span>JANUARY 25 • 09:30 PM</span>
+                    <h3>Campfire Dinner</h3>
+                    <p>An evening under the stars. A private campfire dinner for the family, surrounded by the sounds of the wilderness.</p>
                 </div>
             </div>
 
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-utensils"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">01:30 PM</span>
-                    <h4>Lunch at Resort</h4>
-                    <p>Enjoy a fresh, hot traditional lunch at the resort's restaurant.</p>
+            <div class="milestone js-reveal">
+                <div class="m-number">05</div>
+                <div class="m-content">
+                    <span>JANUARY 26 • 07:00 AM</span>
+                    <h3>Dawn Safari</h3>
+                    <p>Awakening with the wild. A second morning safari to witness the jungle's morning rituals.</p>
+                </div>
+                <div style="width: 42%;"></div>
+            </div>
+
+            <div class="milestone js-reveal">
+                <div class="m-number">06</div>
+                <div style="width: 42%;"></div>
+                <div class="m-content">
+                    <span>JANUARY 26 • 10:00 AM</span>
+                    <h3>Resort Return</h3>
+                    <p>Returning from the wilderness for a hearty breakfast and relaxation by the poolside.</p>
                 </div>
             </div>
 
-            <div class="timeline-item highlight-event js-scroll">
-                <div class="timeline-icon" style="background: var(--primary);"><i class="fa-solid fa-binoculars"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">03:30 PM - 07:15 PM</span>
-                    <h4>The Jungle Safari (Highlight)</h4>
-                    <p>Drive to the sanctuary gate (40 mins). Embark on the 3-hour open Jeep Safari at dusk. Best time for Leopards and Sloth Bears.</p>
+            <div class="milestone js-reveal">
+                <div class="m-number">07</div>
+                <div class="m-content">
+                    <span>JANUARY 26 • 2:00 PM</span>
+                    <h3>Grand Lunch</h3>
+                    <p>A final family feast at the resort, sharing stories of the sightings before the homeward bound journey.</p>
+                </div>
+                <div style="width: 42%;"></div>
+            </div>
+
+            <div class="milestone js-reveal">
+                <div class="m-number">08</div>
+                <div style="width: 42%;"></div>
+                <div class="m-content">
+                    <span>JANUARY 26 • 3:00 PM</span>
+                    <h3>The Descent</h3>
+                    <p>Closing the expedition. We begin our quiet return journey to the Blue City, Jodhpur.</p>
                 </div>
             </div>
 
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-fire-burner"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">09:00 PM</span>
-                    <h4>Dinner & Chill</h4>
-                    <p>Return to the resort for dinner. Enjoy the quiet winter chill before sleep.</p>
+        </section>
+
+        <section class="receipt-container">
+            <div class="paper-bill js-reveal">
+                <div class="bill-header">
+                    <h4>EXPENSE MANIFEST</h4>
+                    <p style="font-size: 0.7rem; color: #999;">10 PASSENGERS • FULL INCLUSIVE</p>
+                </div>
+
+                <div class="bill-line"><span>Luxury Cottages (All)</span><strong>9,900</strong></div>
+                <div class="bill-line"><span>Private Safari x2</span><strong>12,000</strong></div>
+                <div class="bill-line"><span>Family Meal Plan</span><strong>4,500</strong></div>
+                <div class="bill-line"><span>Convoy Fuel</span><strong>3,000</strong></div>
+                <div class="bill-line"><span>Miscellaneous</span><strong>600</strong></div>
+
+                <div class="bill-total-box">
+                    <span style="font-family: 'Syncopate'; font-size: 0.8rem; letter-spacing: 3px;">TOTAL</span>
+                    <span class="total-hand">₹30,000</span>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="https://www.youtube.com/embed/3XIsaM-JOlE" target="_blank" style="font-family: 'Syncopate'; font-size: 0.6rem; text-decoration: none; color: var(--gold); border: 1px solid var(--gold); padding: 15px 30px;">
+                        WATCH PREVIEW VIDEO
+                    </a>
                 </div>
             </div>
+        </section>
 
-            <div class="day-header" style="margin-top: 80px;">
-                <span class="day-badge">DAY 2: MONDAY, JAN 26</span>
-            </div>
-
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-sun"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">09:00 AM</span>
-                    <h4>Slow Morning</h4>
-                    <p>No rush. Wake up late and enjoy breakfast with views of the greenery.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-person-swimming"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">10:30 AM - 01:30 PM</span>
-                    <h4>Pool & Relaxation</h4>
-                    <p>Use the resort amenities. Swim, play games, or take a nature walk near the property.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-route"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">04:30 PM</span>
-                    <h4>Depart for Jodhpur</h4>
-                    <p>Check out. Begin the drive back, enjoying the sunset views down the ghats.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item js-scroll">
-                <div class="timeline-icon"><i class="fa-solid fa-house"></i></div>
-                <div class="timeline-content">
-                    <span class="time-stamp">09:30 PM</span>
-                    <h4>Home Sweet Home</h4>
-                    <p>Arrival back in Jodhpur. Dinner in the city or straight home to rest.</p>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="footer-links">
-            <p style="margin-bottom: 15px; color: #555;">Watch the resort atmosphere here:</p>
-            <a href="https://www.youtube.com/embed/3XIsaM-JOlE" target="_blank" class="yt-link">
-                <i class="fa-brands fa-youtube"></i> View Lake Alpi Resort Tour
-            </a>
-        </div>
-
-        <footer style="text-align: center; padding: 30px; color: #777; font-size: 0.9rem;">
-            <p>Have a safe and wonderful trip!</p>
+        <footer>
+            DESIGNED FOR THE PRIVATE TRAVELER • 2026
         </footer>
-
     </div>
 
     <script>
-        function revealItinerary() {
-            const modal = document.getElementById('intro-modal');
-            const mainApp = document.getElementById('main-app');
-            modal.style.opacity = '0';
+        function unlock() {
+            const gate = document.getElementById('entry-gate');
+            const canvas = document.getElementById('main-canvas');
+            
+            gate.classList.add('open');
             setTimeout(() => {
-                modal.style.display = 'none';
-                mainApp.style.display = 'block';
+                gate.style.display = 'none';
+                canvas.style.display = 'block';
                 setTimeout(() => {
-                    mainApp.style.opacity = '1';
-                    checkScroll();
-                }, 50);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 800);
+                    canvas.style.opacity = '1';
+                    observeItems();
+                }, 100);
+            }, 1500);
         }
 
-        const scrollElements = document.querySelectorAll(".js-scroll");
-        const elementInView = (el, dividend = 1) => {
-            const elementTop = el.getBoundingClientRect().top;
-            return (elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend);
-        };
-        const displayScrollElement = (element) => {
-            element.classList.add("visible");
-        };
-        const checkScroll = () => {
-            scrollElements.forEach((el) => {
-                if (elementInView(el, 1.2)) {
-                    displayScrollElement(el);
-                }
-            })
+        function observeItems() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('.js-reveal').forEach(el => observer.observe(el));
         }
-        window.addEventListener('scroll', () => {
-            checkScroll();
-        });
     </script>
 </body>
 </html>
